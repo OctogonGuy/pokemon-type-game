@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Rectangle?>
+
+<HBox alignment="CENTER_RIGHT" minHeight="0.0" minWidth="0.0" styleClass="options-bar" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tech.octopusdragon.pokemontypegame.gui.OptionsBarController">
+   <children>
+      <Rectangle fx:id="changeBackgroundColorButton" arcHeight="5.0" arcWidth="5.0" fill="GREY" height="60.0" onMouseClicked="#rotateBackgroundGradient" stroke="BLACK" styleClass="change-background-gradient-button" width="60.0" />
+      <ImageView fx:id="fastForwardButton" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#nextSong" pickOnBounds="true" preserveRatio="true" styleClass="fast-forward-button" />
+      <ImageView fx:id="muteButton" fitHeight="100.0" fitWidth="100.0" onMouseClicked="#toggleMute" pickOnBounds="true" preserveRatio="true" styleClass="mute-button" />
+   </children>
+</HBox>
