@@ -1,2 +1,5 @@
 unused assets/
 userdata/
+bin/
+.settings/
+.project
