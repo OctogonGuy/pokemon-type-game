@@ -229,6 +229,7 @@ public class GameScreenController {	// USE GRIDPANE- IT HAS PERCENT-WIDTH PERCEN
 	 * Switches to menu scene
 	 */
 	public void switchToMenuScene(ActionEvent e) {
+		PokemonTypeGameApplication.playSound();
 		PokemonTypeGameApplication.switchToScene(PokemonTypeGameApplication.MENU_FXML_PATH);
 	}
 	
