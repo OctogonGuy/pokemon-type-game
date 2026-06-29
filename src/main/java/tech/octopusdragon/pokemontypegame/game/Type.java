@@ -91,7 +91,7 @@ public enum Type {
 		BUG.immunities = new Type[] {};
 		
 		ROCK.weaknesses = new Type[] {WATER, GRASS, FIGHTING, GROUND, STEEL};
-		ROCK.resistances = new Type[] {NORMAL, FIRE, POISON, FIGHTING};
+		ROCK.resistances = new Type[] {NORMAL, FIRE, POISON};
 		ROCK.immunities = new Type[] {};
 		
 		GHOST.weaknesses = new Type[] {GHOST, DARK};
