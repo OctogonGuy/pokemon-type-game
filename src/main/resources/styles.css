@@ -1,9 +1,13 @@
 /* --- All --- */
 
+@font-face {
+	font-family: "Pokémon DP Pro";
+	src: url('fonts/pokemon-dp-pro.ttf');
+}
+
 .root {
-	-fx-font-family: "Agency FB";
+	-fx-font-family: "Pokémon DP Pro", sans-serif;
 	-fx-font-size: 28px;
-	-fx-font-weight: bold;
 	
 	-fx-padding: 7.5px;
 }
