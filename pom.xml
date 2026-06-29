@@ -71,6 +71,9 @@
                             <options>
                                 <option>--enable-native-access=javafx.graphics</option>
                             </options>
+                            <options>
+                                <option>--enable-native-access=com.sun.jna</option>
+                            </options>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

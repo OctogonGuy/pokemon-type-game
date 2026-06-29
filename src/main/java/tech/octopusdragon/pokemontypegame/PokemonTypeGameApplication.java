@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -11,6 +13,8 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Stack;
 
+import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.base.AudioChannel;
 import uk.co.caprica.vlcj.player.base.MediaPlayer;
 import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
@@ -81,8 +85,10 @@ public class PokemonTypeGameApplication extends Application {
 	public static Game game;	// The current game
 	public static GameMode gameMode;	// Game mode of the current game
 	public static Userdata userdata;	// The userdata
-	private static AudioPlayerComponent musicPlayer;		// Music player
-	private static AudioPlayerComponent soundPlayer;		// Sound effect player
+	private static MediaPlayerFactory musicPlayerFactory;
+	private static MediaPlayer musicPlayer;	// Music player
+	private static MediaPlayerFactory soundPlayerFactory;
+	private static MediaPlayer soundPlayer;	// Sound effect player
 	private static Stack<String> shuffleList;		// List of song paths
 	public static BooleanProperty mutedProperty;	// Muted property
 	public static ObjectProperty<BackgroundGradient> backgroundGradientProperty;	// Current bg
@@ -122,9 +128,11 @@ public class PokemonTypeGameApplication extends Application {
 		
 		// Create a list of songs and play the first song
 		newShuffleList();
-		
-		musicPlayer = new AudioPlayerComponent();
-		musicPlayer.mediaPlayer().events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
+
+		musicPlayerFactory = new MediaPlayerFactory();
+		musicPlayer = musicPlayerFactory.mediaPlayers().newMediaPlayer();
+		musicPlayer.audio().setChannel(AudioChannel.STEREO);
+		musicPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 			@Override
 			public void finished(MediaPlayer mediaPlayer) {
 				javafx.application.Platform.runLater(() -> nextSong());
@@ -134,15 +142,18 @@ public class PokemonTypeGameApplication extends Application {
 				System.out.println("=== MEDIA ERROR ===");
 			}
 		});
-		
-		soundPlayer = new AudioPlayerComponent();
+		musicPlayer.audio().setMute(mutedProperty.get());
+
+		soundPlayerFactory = new MediaPlayerFactory();
+		soundPlayer = soundPlayerFactory.mediaPlayers().newMediaPlayer();
+		soundPlayer.audio().setMute(mutedProperty.get());
 		
 		mutedProperty.addListener((observable, oldValue, newValue) -> {
-			musicPlayer.mediaPlayer().audio().setMute(newValue);
-			soundPlayer.mediaPlayer().audio().setMute(newValue);
+			musicPlayer.audio().setMute(newValue);
+			soundPlayer.audio().setMute(newValue);
 		});
-		musicPlayer.mediaPlayer().audio().setMute(mutedProperty.get());
-		soundPlayer.mediaPlayer().audio().setMute(mutedProperty.get());
+		musicPlayer.audio().setMute(mutedProperty.get());
+		soundPlayer.audio().setMute(mutedProperty.get());
 		
 		nextSong();
 		
@@ -192,7 +203,9 @@ public class PokemonTypeGameApplication extends Application {
 	@Override
 	public void stop() {
 		musicPlayer.release();
+		musicPlayerFactory.release();
 		soundPlayer.release();
+		soundPlayerFactory.release();
 		// Save the userdata upon close
 		userdata.save();
 	}
@@ -206,8 +219,13 @@ public class PokemonTypeGameApplication extends Application {
 		if (shuffleList.isEmpty())
 			newShuffleList();
 		String filename = shuffleList.pop();
-		String path = PokemonTypeGameApplication.class.getResource(filename).toExternalForm();
-		musicPlayer.mediaPlayer().media().play(path);
+		String path;
+		try {
+			path = Paths.get(PokemonTypeGameApplication.class.getResource(filename).toURI()).toString();
+		} catch (URISyntaxException e) {
+			path = PokemonTypeGameApplication.class.getResource(filename).toExternalForm();
+		}
+		musicPlayer.media().play(path);
 	}
 	
 	
@@ -253,8 +271,13 @@ public class PokemonTypeGameApplication extends Application {
 	 * Plays the button press sound effect
 	 */
 	public static void playSound() {
-		String path = PokemonTypeGameApplication.class.getResource(PRESS_BUTTON_SOUND_DIR).toExternalForm();
-		soundPlayer.mediaPlayer().media().play(path);
+		String path;
+		try {
+			path = Paths.get(PokemonTypeGameApplication.class.getResource(PRESS_BUTTON_SOUND_DIR).toURI()).toString();
+		} catch (URISyntaxException e) {
+			path = PokemonTypeGameApplication.class.getResource(PRESS_BUTTON_SOUND_DIR).toExternalForm();
+		}
+		soundPlayer.media().play(path);
 	}
 	
 	
