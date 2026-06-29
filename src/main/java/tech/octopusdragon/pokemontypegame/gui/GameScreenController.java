@@ -171,12 +171,14 @@ public class GameScreenController {	// USE GRIDPANE- IT HAS PERCENT-WIDTH PERCEN
 				refreshLayout();
 			}
 		};
-		
-		Platform.runLater(() -> {
-			defendingImageView.fitWidthProperty().bind(defendingImageView.getScene().widthProperty());
-			((Stage)defendingImageView.getScene().getWindow()).widthProperty().addListener(listener);
-			((Stage)defendingImageView.getScene().getWindow()).heightProperty().addListener(listener);
-			mainContent.layoutBoundsProperty().addListener(listener);
+
+		defendingImageView.sceneProperty().addListener((obs, oldScene, newScene) -> {
+			if (newScene != null) {
+				defendingImageView.fitWidthProperty().bind(newScene.widthProperty());
+				((Stage) newScene.getWindow()).widthProperty().addListener(listener);
+				((Stage) newScene.getWindow()).heightProperty().addListener(listener);
+				mainContent.layoutBoundsProperty().addListener(listener);
+			}
 		});
 		defendingImageView.fitHeightProperty().bind(defendingWrapperPane.heightProperty());
 		
