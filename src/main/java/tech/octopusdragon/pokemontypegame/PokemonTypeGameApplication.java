@@ -129,7 +129,7 @@ public class PokemonTypeGameApplication extends Application {
 		// Create a list of songs and play the first song
 		newShuffleList();
 
-		musicPlayerFactory = new MediaPlayerFactory();
+		musicPlayerFactory = new MediaPlayerFactory("--stereo-mode=1", "--audio-filter=mono");
 		musicPlayer = musicPlayerFactory.mediaPlayers().newMediaPlayer();
 		musicPlayer.audio().setChannel(AudioChannel.STEREO);
 		musicPlayer.events().addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
@@ -144,7 +144,7 @@ public class PokemonTypeGameApplication extends Application {
 		});
 		musicPlayer.audio().setMute(mutedProperty.get());
 
-		soundPlayerFactory = new MediaPlayerFactory();
+		soundPlayerFactory = new MediaPlayerFactory("--stereo-mode=1", "--audio-filter=mono");
 		soundPlayer = soundPlayerFactory.mediaPlayers().newMediaPlayer();
 		soundPlayer.audio().setMute(mutedProperty.get());
 		
