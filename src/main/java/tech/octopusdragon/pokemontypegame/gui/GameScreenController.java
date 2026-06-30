@@ -103,6 +103,8 @@ public class GameScreenController {	// USE GRIDPANE- IT HAS PERCENT-WIDTH PERCEN
 	public void initialize() {
 		buildScene();
 		updateScene();
+		// Wait until defending side is constructed to show
+		mainContent.setVisible(false);
 		
 		// Resize medium options grid pane according to window dimensions
 		mediumOptionsTopGridPane.setMaxWidth(PokemonTypeGameApplication.GUI_PREF_WIDTH * 1.5);
@@ -172,12 +174,15 @@ public class GameScreenController {	// USE GRIDPANE- IT HAS PERCENT-WIDTH PERCEN
 			}
 		};
 
-		Platform.runLater(() -> {
-			if (defendingImageView.getScene() != null) {
-				defendingImageView.fitWidthProperty().bind(defendingImageView.getScene().widthProperty());
-				((Stage)defendingImageView.getScene().getWindow()).widthProperty().addListener(listener);
-				((Stage)defendingImageView.getScene().getWindow()).heightProperty().addListener(listener);
+		defendingImageView.sceneProperty().addListener((obs, oldScene, newScene) -> {
+			if (newScene != null) {
+				defendingImageView.setPreserveRatio(true);
+				defendingImageView.fitWidthProperty().bind(newScene.widthProperty());
+				((Stage) newScene.getWindow()).widthProperty().addListener(listener);
+				((Stage) newScene.getWindow()).heightProperty().addListener(listener);
 				mainContent.layoutBoundsProperty().addListener(listener);
+
+				Platform.runLater(() -> Platform.runLater(() -> mainContent.setVisible(true)));
 			}
 		});
 		defendingImageView.fitHeightProperty().bind(defendingWrapperPane.heightProperty());
