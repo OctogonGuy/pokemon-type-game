@@ -25,6 +25,19 @@ In the top right corner, you can change the background color, skip a song, or mu
 You must have the following installed on your computer to run the application:
 
 - Java JDK (version 25+)
+- VLC
+    - Ubuntu / Debian
+        ```
+        sudo apt update
+        sudo apt install vlc
+        ```
+    - Fedora / RHEL
+        ```
+        sudo dnf install vlc
+        ```
+    - Arch Linux
+        ```
+        sudo pacman -S vlc
 
 ### Installation
 
